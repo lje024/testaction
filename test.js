@@ -24,8 +24,8 @@ const { chromium } = require('playwright');
 	});
 	const page = await context.newPage();
 	await page.goto("https://khazrakh.blogspot.com/");
-	let isclick = Math.round(Math.random()); 
-	if(isclick == 1){
+	let isclick = Math.round(Math.random()*3); 
+	if(isclick > 0){
 		//console.log("going to click");
 		await page.waitForTimeout(5000);
 		//await page.frame(url="https://ad.a-ads.com/1618660?size=200x200").click('a');
