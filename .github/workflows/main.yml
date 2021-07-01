@@ -6,7 +6,7 @@ name: test action
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   schedule:
-    - cron:  '0/5 0,7,8,9,10,11,13,14,16,17,18,19,20,21,22,23 * * *'
+    - cron:  '0 * * * *'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -28,12 +28,13 @@ jobs:
       - name: Install playwright
         run: npm install playwright
         
-#      - name: Install cheerio
-#        run: npm install cheerio
-        
-#      - name: Install hooman
-#        run: npm i hooman got
+      - name: Install ocrspace
+        run: npm i ocr-space-api-wrapper
         
       - name: run playwright
-        run: node test.js
+        run: node test.js $NAME $PW $OCRKEY
+        env:
+          NAME: ${{ secrets.NAME }}
+          PW: ${{ secrets.PW }}
+          OCRKEY: ${{ secrets.OCRKEY }}
       
