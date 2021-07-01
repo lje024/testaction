@@ -240,17 +240,31 @@ const ocrSpace = require('ocr-space-api-wrapper');
 		let passTime = nowTime - starTime;
 		console.log('passTime ' + passTime);
 		
-		await page.goto('https://cointiply.com/pg');
-		await page.waitForTimeout(10000);			
-		await page.click("text=/.*Start Round.*/");
-		await page.waitForTimeout(3000);
-		await page.click("img[id=\"item-one\"]"); 
-		console.log('<150 clidk 1');
-		addCoin = addCoin - 10;
-		console.log('addCoin - 10'); //打印当前连输数 和 coin的增加数
-		console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
-		countItem++;
-		await page.waitForTimeout(3000);
+		try{
+			await page.goto('https://cointiply.com/pg');
+			await page.waitForTimeout(10000);			
+			await page.click("text=/.*Start Round.*/");
+			await page.waitForTimeout(3000);
+			await page.click("img[id=\"item-one\"]"); 
+			console.log('<150 clidk 1');
+			addCoin = addCoin - 10;
+			console.log('addCoin - 10'); //打印当前连输数 和 coin的增加数
+			console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
+			countItem++;
+			await page.waitForTimeout(3000);
+		}catch{
+			await page.goto('https://cointiply.com/pg');
+			await page.waitForTimeout(20000);			
+			await page.click("text=/.*Start Round.*/");
+			await page.waitForTimeout(10000);
+			await page.click("img[id=\"item-one\"]"); 
+			console.log('<150 clidk 1');
+			addCoin = addCoin - 10;
+			console.log('addCoin - 10'); //打印当前连输数 和 coin的增加数
+			console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
+			countItem++;
+			await page.waitForTimeout(10000);
+		}
 		
 		let isEnough = srcCoin + addCoin;   //isEnough 必须大于50 才会运行mulit
 		//console.log(isEnough);
