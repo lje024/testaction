@@ -238,30 +238,47 @@ const ocrSpace = require('ocr-space-api-wrapper');
 		//let passTime = Math.round((nowTime - starTime) / 1000 / 60 ); //经过多少分钟
 		let passTime = nowTime - starTime;
 		console.log('passTime ' + passTime);
+		
+		//判断是否被禁止
+		let pageurl2 = null;   
+		let homeurl2 = "https://cointiply.com/pg";
+		
 		try{
 			await page.goto('https://cointiply.com/pg');
-			await page.waitForTimeout(10000);			
-			await page.click("text=/.*Start Round.*/");
-			await page.waitForTimeout(3000);
-			await page.click("img[id=\"item-one\"]"); 
-			console.log('<150 clidk 1');
-			addCoin = addCoin - 10;
-			console.log('addCoin - 10'); //打印当前连输数 和 coin的增加数
-			console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
-			countItem++;
-			await page.waitForTimeout(3000);
+			await page.waitForTimeout(10000);
+			pageurl2 = await page.url();
+			if(pageurl2 != homeurl2){
+				passTime = 200000000; //设置时间大于30分钟 不执行multi
+				console.log('被官方禁止');
+			}else{
+				await page.click("text=/.*Start Round.*/");
+				await page.waitForTimeout(3000);
+				await page.click("img[id=\"item-one\"]"); 
+				console.log('<150 clidk 1');
+				addCoin = addCoin - 10;
+				console.log('addCoin - 10'); //打印当前连输数 和 coin的增加数
+				console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
+				countItem++;
+				await page.waitForTimeout(3000);
+			}
 		}catch{
 			await page.goto('https://cointiply.com/pg');
-			await page.waitForTimeout(20000);			
-			await page.click("text=/.*Start Round.*/");
-			await page.waitForTimeout(10000);
-			await page.click("img[id=\"item-one\"]"); 
-			console.log('<150 clidk 1');
-			addCoin = addCoin - 10;
-			console.log('addCoin - 10'); //打印当前连输数 和 coin的增加数
-			console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
-			countItem++;
-			await page.waitForTimeout(10000);
+			await page.waitForTimeout(20000);
+			pageurl2 = await page.url();
+			if(pageurl2 != homeurl2){
+				passTime = 200000000; //设置时间大于30分钟 不执行multi
+				console.log('被官方禁止');
+			}else{			
+				await page.click("text=/.*Start Round.*/");
+				await page.waitForTimeout(10000);
+				await page.click("img[id=\"item-one\"]"); 
+				console.log('<150 clidk 1');
+				addCoin = addCoin - 10;
+				console.log('addCoin - 10'); //打印当前连输数 和 coin的增加数
+				console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
+				countItem++;
+				await page.waitForTimeout(10000);
+			}
 		}
 		
 		
@@ -520,15 +537,21 @@ const ocrSpace = require('ocr-space-api-wrapper');
 				isEnough = srcCoin + addCoin;
 			}catch{   //出错刷新网页
 				await page.goto('https://cointiply.com/pg');
-				await page.waitForTimeout(10000);			
-				await page.click("text=/.*Start Round.*/");
-				await page.waitForTimeout(3000);
-				await page.click("img[id=\"item-one\"]"); 
-				console.log('<150 clidk 1');
-				addCoin = addCoin - 10;
-				console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
-				countItem++;
-				await page.waitForTimeout(3000);
+				await page.waitForTimeout(10000);
+				pageurl2 = await page.url();
+				if(pageurl2 != homeurl2){
+					passTime = 200000000; //设置时间大于30分钟 不执行multi
+					console.log('被官方禁止');
+				}else{
+					await page.click("text=/.*Start Round.*/");
+					await page.waitForTimeout(3000);
+					await page.click("img[id=\"item-one\"]"); 
+					console.log('<150 clidk 1');
+					addCoin = addCoin - 10;
+					console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
+					countItem++;
+					await page.waitForTimeout(3000);
+				}
 			}				
 		}
 		
