@@ -6,6 +6,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 	let starTime = date.getTime(); //开始的时间
 	let hour = date.getHours();  //获取小时，用于判定是否上传数据
         console.log('starTime ' + starTime);
+	console.log('hour ' + hour);
 	let arguments = process.argv.splice(2);
 	//console.log('所传递的参数是：', arguments); 
 	let name = arguments[0]; //用户名
