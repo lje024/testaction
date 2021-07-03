@@ -557,7 +557,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 		
 		//提交coin信息
 		try{
-			if(hour == "23"){
+			if(hour == 23){
 				await page.goto("https://cointiply.com/home");
 				await page.waitForTimeout(5000);
 				tempCoin = await page.innerText('//*[@id="app"]/div[2]/div/div[3]/div/span[1]'); 
