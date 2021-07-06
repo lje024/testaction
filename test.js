@@ -241,28 +241,28 @@ const ocrSpace = require('ocr-space-api-wrapper');
 		console.log('passTime ' + passTime);
 		
 		//提交coin信息
-		try{
-			if(hour == 23){
-				await page.goto("https://docs.google.com/forms/d/e/1FAIpQLSfMZFZNI4mLD7z5Ou_uGqtLKnJe-uKqbs99IM9lOO6-DZPn_w/viewform?usp=send_form"); 
-				await page.waitForTimeout(10000);
-				await page.click("input[type=\"text\"]");
-				await page.fill("input[type=\"text\"]", name);
-				console.log('输入名字');
-				await page.waitForTimeout(3000);			
-				await page.fill("(//div[normalize-space(@role)='listitem']/div/div/div[2]/div/div[1]/div/div[1]/input[normalize-space(@type)='text'])[2]", srcCoin);
-				console.log('输入coin数'); 
-				await page.waitForTimeout(3000);	
-				await page.keyboard.press('Tab');
-				await page.waitForTimeout(1000);
-				await page.keyboard.press('Enter');
-				console.log('点击提交'); 	
-				await page.waitForTimeout(3000);
-			}else{
-				console.log('没到时间上传数据'); 	
-			}		
-		}catch{
-			console.log('提交信息出错'); 
-		}		
+		//try{
+		//	if(hour == 23){
+		//		await page.goto("https://docs.google.com/forms/d/e/1FAIpQLSfMZFZNI4mLD7z5Ou_uGqtLKnJe-uKqbs99IM9lOO6-DZPn_w/viewform?usp=send_form"); 
+		//		await page.waitForTimeout(10000);
+		//		await page.click("input[type=\"text\"]");
+		//		await page.fill("input[type=\"text\"]", name);
+		//		console.log('输入名字');
+		//		await page.waitForTimeout(3000);			
+		//		await page.fill("(//div[normalize-space(@role)='listitem']/div/div/div[2]/div/div[1]/div/div[1]/input[normalize-space(@type)='text'])[2]", srcCoin);
+		//		console.log('输入coin数'); 
+		//		await page.waitForTimeout(3000);	
+		//		await page.keyboard.press('Tab');
+		//		await page.waitForTimeout(1000);
+		//		await page.keyboard.press('Enter');
+		//		console.log('点击提交'); 	
+		//		await page.waitForTimeout(3000);
+		//	}else{
+		//		console.log('没到时间上传数据'); 	
+		//	}		
+		//}catch{
+		//	console.log('提交信息出错'); 
+		//}		
 		
 		// Play the Multiplier
 		//判断是否被禁止
