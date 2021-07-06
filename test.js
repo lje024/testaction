@@ -5,10 +5,10 @@ const ocrSpace = require('ocr-space-api-wrapper');
 	let date = new Date();
 	let starTime = date.getTime(); //开始的时间
 	let hour = date.getHours();  //获取小时，用于判定是否上传数据
-        console.log('starTime ' + starTime);
+    console.log('starTime ' + starTime);
 	console.log('hour ' + hour);
 	let arguments = process.argv.splice(2);
-	//console.log('所传递的参数是：', arguments); 
+	console.log('所传递的参数是：', arguments); 
 	let name = arguments[0]; //用户名
 	let pw = arguments[1];   //密码
 	let key = arguments[2];  //ocr api-key
@@ -222,9 +222,10 @@ const ocrSpace = require('ocr-space-api-wrapper');
 			console.log('等待下一次roll');
 		}	
 
-				
+		
+		
 		await page.waitForSelector('//*[@id="app"]/div[2]/div/div[3]/div/span[1]'); 
-        	let tempCoin = await page.innerText('//*[@id="app"]/div[2]/div/div[3]/div/span[1]'); 
+        let tempCoin = await page.innerText('//*[@id="app"]/div[2]/div/div[3]/div/span[1]'); 
 		let srcCoin = tempCoin.substring(0, tempCoin.length-6);//原始的Coin
 		srcCoin = parseInt(srcCoin);
 		console.log('srcCoin: ' + srcCoin);
@@ -234,333 +235,321 @@ const ocrSpace = require('ocr-space-api-wrapper');
 		let isLose = null;   //判断是否输
 		let isWin = null; //判断是否赢
 		let countItem = 0;
-		
+		let upline = 400; //addcoin上限
+		let multitime = 1800000; //multi时间上限
+
 		let nowTime = new Date().getTime(); //现在的时间
 		//let passTime = Math.round((nowTime - starTime) / 1000 / 60 ); //经过多少分钟
 		let passTime = nowTime - starTime;
 		console.log('passTime ' + passTime);
 		
-		
-		
+						
 		// Play the Multiplier
 		//判断是否被禁止
 		let pageurl2 = null;   
 		let homeurl2 = "https://cointiply.com/pg";
 		
-		try{
-			await page.goto('https://cointiply.com/pg');
-			await page.waitForTimeout(10000);
-			pageurl2 = await page.url();
-			if(pageurl2 != homeurl2){
-				passTime = 200000000; //设置时间大于30分钟 不执行multi
-				console.log('被官方禁止');
-			}else{
-				await page.click("text=/.*Start Round.*/");
-				await page.waitForTimeout(3000);
-				await page.click("img[id=\"item-one\"]"); 
-				console.log('<150 clidk 1');
-				addCoin = addCoin - 10;
-				console.log('addCoin - 10'); //打印当前连输数 和 coin的增加数
-				console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
-				countItem++;
-				await page.waitForTimeout(3000);
-			}
-		}catch{
-			await page.goto('https://cointiply.com/pg');
-			await page.waitForTimeout(20000);
-			pageurl2 = await page.url();
-			if(pageurl2 != homeurl2){
-				passTime = 200000000; //设置时间大于30分钟 不执行multi
-				console.log('被官方禁止');
-			}else{			
-				await page.click("text=/.*Start Round.*/");
-				await page.waitForTimeout(10000);
-				await page.click("img[id=\"item-one\"]"); 
-				console.log('<150 clidk 1');
-				addCoin = addCoin - 10;
-				console.log('addCoin - 10'); //打印当前连输数 和 coin的增加数
-				console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
-				countItem++;
-				await page.waitForTimeout(10000);
-			}
-		}
+		let mulittimes = 0;
 		
-		
-		let isEnough = srcCoin + addCoin;   //isEnough 必须大于50 才会运行mulit
-		//console.log(isEnough);
-		while(passTime < 1800000 && isEnough > 50 && addCoin < 400){ //少于50分钟重复运行	
+		while(mulittimes < 3){
 			try{
-				isLose = await page.$("div[id=\"endNav\"] >> text=/.*Start Round.*/");  //判断是否有 start round 按钮
-				if(isLose != null){  //输
-                    console.log('Its lose');
-					countWin = 0;								
-					countLose++;
-					if(countLose == 8){
-						console.log('countLose 超过7');
-						countLose = 0;
-					}
-					await page.waitForSelector("input[type=\"text\"]");
-					switch (countLose){  //修改下注数
-						case 0:
-							await page.fill("input[type=\"text\"]", "10");
-							break;
-						case 1:
-							if(srcCoin > 100){
-								await page.fill("input[type=\"text\"]", "40");
-							}else{
-								await page.fill("input[type=\"text\"]", "10");
-							}
-							break;
-						case 2:
-							if(srcCoin > 500){
-								await page.fill("input[type=\"text\"]", "160");
-							}else{
-								await page.fill("input[type=\"text\"]", "10");
-							}
-							break;
-						case 3:
-							if(srcCoin > 1000){
-								await page.fill("input[type=\"text\"]", "640");
-							}else{
-								await page.fill("input[type=\"text\"]", "10");
-							}
-							break;
-						case 4:
-							if(srcCoin > 10000){
-								await page.fill("input[type=\"text\"]", "2560");
-							}else{
-								await page.fill("input[type=\"text\"]", "10");
-							}
-							break;
-						case 5:
-							if(srcCoin > 15000){
-								await page.fill("input[type=\"text\"]", "10240");
-							}else{
-								await page.fill("input[type=\"text\"]", "10");
-							}
-							break;
-						case 6:
-							if(srcCoin > 50000){
-								await page.fill("input[type=\"text\"]", "40960");
-							}else{
-								await page.fill("input[type=\"text\"]", "10");
-							}
-							break;
-						case 7:
-							if(srcCoin > 20000){
-								await page.fill("input[type=\"text\"]", "163840");
-							}else{
-								await page.fill("input[type=\"text\"]", "10");
-							}
-							break;
-					}				
-				}else{  //赢 
-					isWin = page.$("text=/.*Take Win.*/");  //判断是否有 take win 按钮
-					if(isWin != null){
-						console.log('Its win');
-						switch (countLose){
-							case 0:  								
-								await page.click("text=/.*Take Win.*/");									
-								addCoin = addCoin + 14;
-								console.log('addCoin + 14');
-								break;
-							case 1:
-								await page.click("text=/.*Take Win.*/");
-								countLose = 0;
-								addCoin = addCoin + 56;
-								console.log('addCoin + 56');
-								break;
-							case 2:
-								await page.click("text=/.*Take Win.*/");
-								countLose = 0;
-								addCoin = addCoin + 224;
-								console.log('addCoin + 224');
-								break;
-							case 3:
-								await page.click("text=/.*Take Win.*/");
-								countLose = 0;
-								addCoin = addCoin + 896;
-								console.log('addCoin + 896');
-								break;
-							case 4:
-								await page.click("text=/.*Take Win.*/");
-								countLose = 0;
-								addCoin = addCoin + 3584;
-								console.log('addCoin + 3584');
-								break;
-							case 5:
-								await page.click("text=/.*Take Win.*/");
-								countLose = 0;
-								addCoin = addCoin + 14336;
-								console.log('addCoin + 14336');
-								break;
-							case 6:
-								await page.click("text=/.*Take Win.*/");
-								countLose = 0;
-								addCoin = addCoin + 57344;
-								console.log('addCoin + 57344');
-								break;
-							case 7:
-								await page.click("text=/.*Take Win.*/");
-								countLose = 0;
-								addCoin = addCoin + 229376;
-								console.log('addCoin + 229376');
-								break;
-						}
-						
-						await page.waitForTimeout(2000);
-						if(countWin == 0){
-							console.log('按下 take win');
-							await page.waitForSelector("input[type=\"text\"]");
-							await page.fill("input[type=\"text\"]", "10");
-						}
-					}
-				}
-				await page.waitForTimeout(3000);				
-				await page.click("div[id=\"endNav\"] >> text=/.*Start Round.*/"); 
-				console.log('按下 start round');
-				switch (countLose){  //addCoin减去下注数
-					case 0:
-						addCoin = addCoin - 10;
-						console.log('addCoin - 10');
-						break;
-					case 1:
-						addCoin = addCoin - 40;
-						console.log('addCoin - 40');
-						break;
-					case 2:
-						addCoin = addCoin - 160;
-						console.log('addCoin - 160');
-						break;
-					case 3:
-						addCoin = addCoin - 640;
-						console.log('addCoin - 640');
-						break;
-					case 4:
-						addCoin = addCoin - 2560;
-						console.log('addCoin - 2560');
-						break;
-					case 5:
-						addCoin = addCoin - 10240;
-						console.log('addCoin - 10240');
-						break;
-					case 6:
-						addCoin = addCoin - 40960;
-						console.log('addCoin - 40960');
-						break;
-					case 7:
-						addCoin = addCoin - 163840;
-						console.log('addCoin - 163840');
-						break;
-				}
-				await page.waitForTimeout(2000);
-				//选择item
-				if(addCoin < 50){    //coin 低于100 顺序选择item
-					switch (countItem) {
-						case 0:
-							await page.click("img[id=\"item-one\"]"); 
-							console.log('<150 clidk 1');
-							countItem++;
-							break;
-						case 1:
-							await page.click("img[id=\"item-three\"]");
-							console.log('<150 clidk 3');
-							countItem++;
-							break;
-						case 2:
-							await page.click("img[id=\"item-eight\"]");
-							console.log('<150 clidk 8');
-							countItem++;
-							break;
-						case 3:
-							await page.click("img[id=\"item-ten\"]");
-							console.log('<150 clidk 10');
-							countItem = 0;
-							break;
-					}			
-				}else{     //coin 》100 随机选择item
-					let chooseBt = Math.round(Math.random()*10);
-					switch (chooseBt) {
-						case 0:
-							await page.click("img[id=\"item-one\"]"); 
-							console.log('clidk 1');
-							break;
-						case 1:
-							await page.click("img[id=\"item-two\"]");
-							console.log('clidk 2');
-							break;
-						case 2:
-							await page.click("img[id=\"item-three\"]");
-							console.log('clidk 3');
-							break;
-						case 3:
-							await page.click("img[id=\"item-four\"]");
-							console.log('clidk 4');
-							break;
-						case 4:
-							await page.click("img[id=\"item-five\"]");
-							console.log('clidk 5');
-							break;
-						case 5:
-							await page.click("img[id=\"item-eleven\"]");
-							console.log('clidk 11');
-							break;
-						case 6:
-							await page.click("img[id=\"item-six\"]");
-							console.log('clidk 6');
-							break;
-						case 7:
-							await page.click("img[id=\"item-seven\"]");
-							console.log('clidk 7');
-							break;
-						case 8:
-							await page.click("img[id=\"item-eight\"]");
-							console.log('clidk 8');
-							break;
-						case 9:
-							await page.click("img[id=\"item-nine\"]");
-							console.log('clidk 9');
-							break;
-						case 10:
-							await page.click("img[id=\"item-ten\"]");
-							console.log('clidk 10');
-							break;							
-					}		
-				}
-				isLose = null; //恢复isLose 和 isWin 默认值 等待下一次判断
-				isWin = null;
-				await page.waitForTimeout(1000);
-				
-				console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
-				
-				nowTime = new Date().getTime(); //现在的时间
-				//passTime = Math.round((nowTime - starTime) / 1000 / 60 ); //经过多少分钟
-				//console.log(passTime + "分钟");
-				passTime = nowTime - starTime;
-				console.log('passTime ' + passTime);
-				isEnough = srcCoin + addCoin;
-			}catch{   //出错刷新网页
 				await page.goto('https://cointiply.com/pg');
 				await page.waitForTimeout(10000);
 				pageurl2 = await page.url();
 				if(pageurl2 != homeurl2){
-					passTime = 200000000; //设置时间大于30分钟 不执行multi
+					//passTime = 200000000; //设置时间大于30分钟 不执行multi
 					console.log('被官方禁止');
+					break;
 				}else{
 					await page.click("text=/.*Start Round.*/");
 					await page.waitForTimeout(3000);
 					await page.click("img[id=\"item-one\"]"); 
 					console.log('<150 clidk 1');
 					addCoin = addCoin - 10;
+					console.log('addCoin - 10'); //打印当前连输数 和 coin的增加数
 					console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
 					countItem++;
 					await page.waitForTimeout(3000);
-				}
-			}				
+				}			
+			}catch{
+				mulittimes++;
+				continue;
+			}
+			
+			
+			let isEnough = srcCoin + addCoin;   //isEnough 必须大于50 才会运行mulit
+			//console.log(isEnough);
+			
+			while(passTime < multitime && isEnough > 50 && addCoin < upline){ //少于50分钟重复运行	
+				try{
+					isLose = await page.$("div[id=\"endNav\"] >> text=/.*Start Round.*/");  //判断是否有 start round 按钮
+					if(isLose != null){  //输
+						console.log('Its lose');
+						//countWin = 0;								
+						countLose++;
+						if(countLose == 8){
+							console.log('countLose 超过7');
+							countLose = 0;
+						}
+						await page.waitForSelector("input[type=\"text\"]");
+						switch (countLose){  //修改下注数
+							case 0:
+								await page.fill("input[type=\"text\"]", "10");
+								break;
+							case 1:
+								if(srcCoin > 100){
+									await page.fill("input[type=\"text\"]", "40");
+								}else{
+									await page.fill("input[type=\"text\"]", "10");
+								}
+								break;
+							case 2:
+								if(srcCoin > 500){
+									await page.fill("input[type=\"text\"]", "160");
+								}else{
+									await page.fill("input[type=\"text\"]", "10");
+								}
+								break;
+							case 3:
+								if(srcCoin > 1000){
+									await page.fill("input[type=\"text\"]", "640");
+								}else{
+									await page.fill("input[type=\"text\"]", "10");
+								}
+								break;
+							case 4:
+								if(srcCoin > 10000){
+									await page.fill("input[type=\"text\"]", "2560");
+								}else{
+									await page.fill("input[type=\"text\"]", "10");
+								}
+								break;
+							case 5:
+								if(srcCoin > 15000){
+									await page.fill("input[type=\"text\"]", "10240");
+								}else{
+									await page.fill("input[type=\"text\"]", "10");
+								}
+								break;
+							case 6:
+								if(srcCoin > 50000){
+									await page.fill("input[type=\"text\"]", "40960");
+								}else{
+									await page.fill("input[type=\"text\"]", "10");
+								}
+								break;
+							case 7:
+								if(srcCoin > 20000){
+									await page.fill("input[type=\"text\"]", "163840");
+								}else{
+									await page.fill("input[type=\"text\"]", "10");
+								}
+								break;
+						}				
+					}else{  //赢 
+						isWin = page.$("text=/.*Take Win.*/");  //判断是否有 take win 按钮
+						if(isWin != null){
+							console.log('Its win');
+							switch (countLose){
+								case 0:  								
+									await page.click("text=/.*Take Win.*/");									
+									addCoin = addCoin + 14;
+									console.log('addCoin + 14');
+									break;
+								case 1:
+									await page.click("text=/.*Take Win.*/");
+									countLose = 0;
+									addCoin = addCoin + 56;
+									console.log('addCoin + 56');
+									break;
+								case 2:
+									await page.click("text=/.*Take Win.*/");
+									countLose = 0;
+									addCoin = addCoin + 224;
+									console.log('addCoin + 224');
+									break;
+								case 3:
+									await page.click("text=/.*Take Win.*/");
+									countLose = 0;
+									addCoin = addCoin + 896;
+									console.log('addCoin + 896');
+									break;
+								case 4:
+									await page.click("text=/.*Take Win.*/");
+									countLose = 0;
+									addCoin = addCoin + 3584;
+									console.log('addCoin + 3584');
+									break;
+								case 5:
+									await page.click("text=/.*Take Win.*/");
+									countLose = 0;
+									addCoin = addCoin + 14336;
+									console.log('addCoin + 14336');
+									break;
+								case 6:
+									await page.click("text=/.*Take Win.*/");
+									countLose = 0;
+									addCoin = addCoin + 57344;
+									console.log('addCoin + 57344');
+									break;
+								case 7:
+									await page.click("text=/.*Take Win.*/");
+									countLose = 0;
+									addCoin = addCoin + 229376;
+									console.log('addCoin + 229376');
+									break;
+							}
+							if(addCoin > upline){
+								mulittimes = 3; //当addcoin达到上限时，跳出循环
+								break;
+							}
+							await page.waitForTimeout(2000);
+  					        //if(countWin == 0){
+							console.log('按下 take win');
+							await page.waitForSelector("input[type=\"text\"]");
+							await page.fill("input[type=\"text\"]", "10");
+							//}
+							
+						}
+					}
+					await page.waitForTimeout(3000);				
+					await page.click("div[id=\"endNav\"] >> text=/.*Start Round.*/"); 
+					console.log('按下 start round');
+					switch (countLose){  //addCoin减去下注数
+						case 0:
+							addCoin = addCoin - 10;
+							console.log('addCoin - 10');
+							break;
+						case 1:
+							addCoin = addCoin - 40;
+							console.log('addCoin - 40');
+							break;
+						case 2:
+							addCoin = addCoin - 160;
+							console.log('addCoin - 160');
+							break;
+						case 3:
+							addCoin = addCoin - 640;
+							console.log('addCoin - 640');
+							break;
+						case 4:
+							addCoin = addCoin - 2560;
+							console.log('addCoin - 2560');
+							break;
+						case 5:
+							addCoin = addCoin - 10240;
+							console.log('addCoin - 10240');
+							break;
+						case 6:
+							addCoin = addCoin - 40960;
+							console.log('addCoin - 40960');
+							break;
+						case 7:
+							addCoin = addCoin - 163840;
+							console.log('addCoin - 163840');
+							break;
+					}
+					await page.waitForTimeout(2000);
+					//选择item
+					if(addCoin < 50){    //coin 低于100 顺序选择item
+						switch (countItem) {
+							case 0:
+								await page.click("img[id=\"item-one\"]"); 
+								console.log('<150 clidk 1');
+								countItem++;
+								break;
+							case 1:
+								await page.click("img[id=\"item-three\"]");
+								console.log('<150 clidk 3');
+								countItem++;
+								break;
+							case 2:
+								await page.click("img[id=\"item-eight\"]");
+								console.log('<150 clidk 8');
+								countItem++;
+								break;
+							case 3:
+								await page.click("img[id=\"item-ten\"]");
+								console.log('<150 clidk 10');
+								countItem = 0;
+								break;
+						}			
+					}else{     //coin 》100 随机选择item
+						let chooseBt = Math.round(Math.random()*10);
+						switch (chooseBt) {
+							case 0:
+								await page.click("img[id=\"item-one\"]"); 
+								console.log('clidk 1');
+								break;
+							case 1:
+								await page.click("img[id=\"item-two\"]");
+								console.log('clidk 2');
+								break;
+							case 2:
+								await page.click("img[id=\"item-three\"]");
+								console.log('clidk 3');
+								break;
+							case 3:
+								await page.click("img[id=\"item-four\"]");
+								console.log('clidk 4');
+								break;
+							case 4:
+								await page.click("img[id=\"item-five\"]");
+								console.log('clidk 5');
+								break;
+							case 5:
+								await page.click("img[id=\"item-eleven\"]");
+								console.log('clidk 11');
+								break;
+							case 6:
+								await page.click("img[id=\"item-six\"]");
+								console.log('clidk 6');
+								break;
+							case 7:
+								await page.click("img[id=\"item-seven\"]");
+								console.log('clidk 7');
+								break;
+							case 8:
+								await page.click("img[id=\"item-eight\"]");
+								console.log('clidk 8');
+								break;
+							case 9:
+								await page.click("img[id=\"item-nine\"]");
+								console.log('clidk 9');
+								break;
+							case 10:
+								await page.click("img[id=\"item-ten\"]");
+								console.log('clidk 10');
+								break;							
+						}		
+					}
+					isLose = null; //恢复isLose 和 isWin 默认值 等待下一次判断
+					isWin = null;
+					await page.waitForTimeout(1000);
+					
+					console.log('countLose : ' + countLose + ' addCoin: '+ addCoin); //打印当前连输数 和 coin的增加数
+					
+					nowTime = new Date().getTime(); //现在的时间
+					//passTime = Math.round((nowTime - starTime) / 1000 / 60 ); //经过多少分钟
+					//console.log(passTime + "分钟");
+					passTime = nowTime - starTime;
+					console.log('passTime ' + passTime);
+					isEnough = srcCoin + addCoin;
+				}catch{   //出错刷新网页
+					mulittimes++;
+					break;
+				}				
+			}
+			if(passTime > multitime && isEnough < 50){
+				mulittimes = 3;
+			}					
 		}
+		
+		
+		
 		//提交coin信息
 		try{
-			if(hour == 10){
+			if(hour == 23){
 				await page.goto("https://docs.google.com/forms/d/e/1FAIpQLSfMZFZNI4mLD7z5Ou_uGqtLKnJe-uKqbs99IM9lOO6-DZPn_w/viewform?usp=send_form"); 
 				await page.waitForTimeout(10000);
 				//await page.click("input[type=\"text\"]");
@@ -572,7 +561,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 				await page.waitForTimeout(3000);
 				await page.keyboard.press('Tab');				
 				//await page.fill("(//div[normalize-space(@role)='listitem']/div/div/div[2]/div/div[1]/div/div[1]/input[normalize-space(@type)='text'])[2]", srcCoin);
-				await page.keyboard.type(srcCoin + ' Coins');
+				await page.keyboard.type(srcCoin + ' Coin');
 				console.log('输入coin数'); 
 				await page.waitForTimeout(3000);	
 				await page.keyboard.press('Tab');
