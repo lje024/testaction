@@ -560,7 +560,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 		}
 		//提交coin信息
 		try{
-			if(hour == 9){
+			if(hour == 10){
 				await page.goto("https://docs.google.com/forms/d/e/1FAIpQLSfMZFZNI4mLD7z5Ou_uGqtLKnJe-uKqbs99IM9lOO6-DZPn_w/viewform?usp=send_form"); 
 				await page.waitForTimeout(10000);
 				//await page.click("input[type=\"text\"]");
