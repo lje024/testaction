@@ -5,10 +5,10 @@ const ocrSpace = require('ocr-space-api-wrapper');
 	let date = new Date();
 	let starTime = date.getTime(); //开始的时间
 	let hour = date.getHours();  //获取小时，用于判定是否上传数据
-    console.log('starTime ' + starTime);
+    	console.log('starTime ' + starTime);
 	console.log('hour ' + hour);
 	let arguments = process.argv.splice(2);
-	console.log('所传递的参数是：', arguments); 
+	//console.log('所传递的参数是：', arguments); 
 	let name = arguments[0]; //用户名
 	let pw = arguments[1];   //密码
 	let key = arguments[2];  //ocr api-key
@@ -225,7 +225,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 		
 		
 		await page.waitForSelector('//*[@id="app"]/div[2]/div/div[3]/div/span[1]'); 
-        let tempCoin = await page.innerText('//*[@id="app"]/div[2]/div/div[3]/div/span[1]'); 
+        	let tempCoin = await page.innerText('//*[@id="app"]/div[2]/div/div[3]/div/span[1]'); 
 		let srcCoin = tempCoin.substring(0, tempCoin.length-6);//原始的Coin
 		srcCoin = parseInt(srcCoin);
 		console.log('srcCoin: ' + srcCoin);
@@ -250,6 +250,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 		let homeurl2 = "https://cointiply.com/pg";
 		
 		let mulittimes = 0;
+		console.log('mulittimes ' + mulittimes);
 		
 		while(mulittimes < 3){
 			try{
@@ -273,6 +274,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 				}			
 			}catch{
 				mulittimes++;
+				console.log('打开网页出错 mulittimes ' + mulittimes);
 				continue;
 			}
 			
@@ -401,6 +403,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 							}
 							if(addCoin > upline){
 								mulittimes = 3; //当addcoin达到上限时，跳出循环
+								console.log('达到上限 mulittimes ' + mulittimes);
 								break;
 							}
 							await page.waitForTimeout(2000);
@@ -537,11 +540,13 @@ const ocrSpace = require('ocr-space-api-wrapper');
 					isEnough = srcCoin + addCoin;
 				}catch{   //出错刷新网页
 					mulittimes++;
+					console.log('网页运行出错 mulittimes ' + mulittimes);
 					break;
 				}				
 			}
 			if(passTime > multitime && isEnough < 50){
 				mulittimes = 3;
+				console.log('超时或不够下限 mulittimes ' + mulittimes);
 			}					
 		}
 		
