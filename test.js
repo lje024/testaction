@@ -560,7 +560,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 		}
 		//提交coin信息
 		try{
-			if(hour == 7){
+			if(hour == 9){
 				await page.goto("https://docs.google.com/forms/d/e/1FAIpQLSfMZFZNI4mLD7z5Ou_uGqtLKnJe-uKqbs99IM9lOO6-DZPn_w/viewform?usp=send_form"); 
 				await page.waitForTimeout(10000);
 				//await page.click("input[type=\"text\"]");
@@ -572,7 +572,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 				await page.waitForTimeout(3000);
 				await page.keyboard.press('Tab');				
 				//await page.fill("(//div[normalize-space(@role)='listitem']/div/div/div[2]/div/div[1]/div/div[1]/input[normalize-space(@type)='text'])[2]", srcCoin);
-				await page.keyboard.type(srcCoin);
+				await page.keyboard.type(srcCoin + ' Coins');
 				console.log('输入coin数'); 
 				await page.waitForTimeout(3000);	
 				await page.keyboard.press('Tab');
