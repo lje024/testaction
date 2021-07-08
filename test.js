@@ -3,6 +3,7 @@ const cheerio = require('cheerio');
 const got = require('hooman');
 
 (async () => {
+	try{
 	const { body } = await got('https://techblog.willshouse.com/2012/01/03/most-common-user-agents/');
 	const $ = cheerio.load(body);
 	const userAgents = $('tbody .useragent')
@@ -29,24 +30,28 @@ const got = require('hooman');
 	});
 	const page = await context.newPage();
 	await page.goto("https://khazrakh.blogspot.com/");
-	
-	await page.waitForTimeout(10000);
-	await page.keyboard.press('Tab');
-	await page.waitForTimeout(500);
-	await page.keyboard.press('Tab');
-	await page.waitForTimeout(500);
-	await page.keyboard.press('Tab');
-	await page.waitForTimeout(500);
-	await page.keyboard.press('Tab');
-	await page.waitForTimeout(500);
-	await page.keyboard.press('Tab');
-	await page.waitForTimeout(500);
-	await page.keyboard.press('Tab');
-	await page.waitForTimeout(500);
-	await page.keyboard.press('Tab');
-	await page.waitForTimeout(500);
-	await page.keyboard.press('Enter');
-	console.log('点击ad'); 
-
+	let isclick = Math.round(Math.random()); 
+	if(isclick == 1){
+		await page.waitForTimeout(10000);
+		await page.keyboard.press('Tab');
+		await page.waitForTimeout(500);
+		await page.keyboard.press('Tab');
+		await page.waitForTimeout(500);
+		await page.keyboard.press('Tab');
+		await page.waitForTimeout(500);
+		await page.keyboard.press('Tab');
+		await page.waitForTimeout(500);
+		await page.keyboard.press('Tab');
+		await page.waitForTimeout(500);
+		await page.keyboard.press('Tab');
+		await page.waitForTimeout(500);
+		await page.keyboard.press('Tab');
+		await page.waitForTimeout(500);
+		await page.keyboard.press('Enter');
+		console.log('点击ad'); 
+	}
 	await browser.close();
+	}catch{
+		await browser.close();
+	}
 })();
