@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 //const got = require('hooman');
 
 (async () => {
-	try{
+
 //		const { body } = await got('https://techblog.willshouse.com/2012/01/03/most-common-user-agents/');
 //		const $ = cheerio.load(body);
 //		const userAgents = $('tbody .useragent')
@@ -35,6 +35,7 @@ const { chromium } = require('playwright');
 	//		userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36'
 		});
 		const page = await context.newPage();
+	try{
 		await page.goto("https://khazrakh.blogspot.com/");
 		let isclick = Math.round(Math.random()); 
 		if(isclick == 1){
@@ -55,10 +56,11 @@ const { chromium } = require('playwright');
 			await page.waitForTimeout(500);
 			await page.keyboard.press('Enter');
 			console.log('点击ad'); 
-		}
-		await browser.close();
+		}else{
+			console.log('这次不点击ad');
+		}		
 	}catch{
 		console.log('error');
-//		await browser.close();
 	}
+	await browser.close();
 })();
