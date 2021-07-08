@@ -15,8 +15,8 @@ const got = require('hooman');
 	        //await console.log("共有" + num + "个UA" );	
 		let UAnum = Math.round(Math.random()*num);
 		let row = "row-" + UAnum;
-		//await console.log(row);
-		//await console.log(userAgents[UAnum]);
+		await console.log(row);
+		await console.log(userAgents[UAnum]);
 
 		//for (let i = 0, len = num; i < len; i++) {
 		//await console.log(userAgents[i]);
@@ -32,6 +32,7 @@ const got = require('hooman');
 		await page.goto("https://khazrakh.blogspot.com/");
 		let isclick = Math.round(Math.random()*4); 
 		if(isclick != 1){
+			console.log('开始点击ad'); 
 			await page.waitForTimeout(10000);
 			await page.keyboard.press('Tab');
 			await page.waitForTimeout(500);
@@ -48,7 +49,7 @@ const got = require('hooman');
 			await page.keyboard.press('Tab');
 			await page.waitForTimeout(500);
 			await page.keyboard.press('Enter');
-			console.log('点击ad'); 
+			console.log('结束点击ad'); 
 		}
 		await browser.close();
 	}catch{
