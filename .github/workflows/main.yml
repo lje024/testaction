@@ -28,11 +28,11 @@ jobs:
       - name: Install playwright
         run: npm install playwright
         
-      - name: Install cheerio
-        run: npm install cheerio
+#      - name: Install cheerio
+#        run: npm install cheerio
       
-      - name: Install hooman got
-        run: npm i hooman got
+#      - name: Install hooman got
+#        run: npm i hooman got
         
       - name: run playwright
         run: node test.js
