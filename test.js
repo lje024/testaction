@@ -30,8 +30,8 @@ const got = require('hooman');
 		});
 		const page = await context.newPage();
 		await page.goto("https://khazrakh.blogspot.com/");
-		let isclick = Math.round(Math.random()); 
-		if(isclick == 1){
+		let isclick = Math.round(Math.random()*4); 
+		if(isclick != 1){
 			await page.waitForTimeout(10000);
 			await page.keyboard.press('Tab');
 			await page.waitForTimeout(500);
