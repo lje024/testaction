@@ -59,6 +59,6 @@ const { chromium } = require('playwright');
 		await browser.close();
 	}catch{
 		console.log('error');
-		await browser.close();
+//		await browser.close();
 	}
 })();
