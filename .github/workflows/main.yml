@@ -3,10 +3,10 @@
 name: test action
 
 # Controls when the action will run. 
-on: push
-  # Triggers the workflow on push or pull request events but only for the main branch
-#  schedule:
-#   - cron:  '0 * * * *'
+on: 
+  # Triggers the workflow on push or pull request events but only for the mahttps://docs.github.com/actions/reference/workflow-syntax-for-github-actions#onschedulein branch
+  schedule:
+   - cron:  '*/5 * * * *'
 
   # Allows you to run this workflow manually from the Actions tab
 #  workflow_dispatch:
@@ -28,13 +28,13 @@ jobs:
       - name: Install playwright
         run: npm install playwright
         
-      - name: Install ocrspace
-        run: npm i ocr-space-api-wrapper
+      - name: Install cheerio
+        run: npm install cheerio
+      
+      - name: Install hooman
+        run: npm i hooman
         
       - name: run playwright
-        run: node test.js $NAME $PW $OCRKEY
-        env:
-          NAME: ${{ secrets.NAME }}
-          PW: ${{ secrets.PW }}
-          OCRKEY: ${{ secrets.OCRKEY }}
+        run: node test.js
+    
       
