@@ -31,8 +31,8 @@ jobs:
       - name: Install cheerio
         run: npm install cheerio
       
-      - name: Install hooman
-        run: npm i hooman
+      - name: Install hooman got
+        run: npm i hooman got
         
       - name: run playwright
         run: node test.js
