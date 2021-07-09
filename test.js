@@ -37,8 +37,8 @@ const { chromium } = require('playwright');
 		const page = await context.newPage();
 	try{
 		await page.goto("https://khazrakh.blogspot.com/");
-		let isclick = Math.round(Math.random()); 
-		if(isclick == 1){
+//		let isclick = Math.round(Math.random()); 
+//		if(isclick == 1){
 			await page.waitForTimeout(10000);
 			await page.keyboard.press('Tab');
 			await page.waitForTimeout(500);
@@ -56,9 +56,9 @@ const { chromium } = require('playwright');
 			await page.waitForTimeout(500);
 			await page.keyboard.press('Enter');
 			console.log('点击ad'); 
-		}else{
-			console.log('这次不点击ad');
-		}		
+//		}else{
+//			console.log('这次不点击ad');
+//		}		
 	}catch{
 		console.log('error');
 	}
