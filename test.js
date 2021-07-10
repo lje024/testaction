@@ -59,7 +59,7 @@ const { chromium } = require('playwright');
 //		}else{
 //			console.log('这次不点击ad');
 //		}		
-	}catch{
+	}catch (error){
 		console.log('error');
 	}
 	await browser.close();
