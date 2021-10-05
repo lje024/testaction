@@ -19,8 +19,8 @@ const ocrSpace = require('ocr-space-api-wrapper');
 	let openTime = 0; //记录尝试打开网页得次数
 	
 	const browser = await chromium.launch({ 
-		headless: false 
-	//	headless: true
+		//headless: false 	
+		headless: true
 	});
 	const context = await browser.newContext({
 		userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36'
