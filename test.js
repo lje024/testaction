@@ -419,7 +419,7 @@ const ocrSpace = require('ocr-space-api-wrapper');
 					console.log('baseCoin: ' + baseCoin);
 					console.log('inputCoin: ' + inputCoin);
 					//await page.click("div[id=\"endNav\"] >> text=/.*Custom.*/");
-					await page.click("div[id=\"endNav\"] input[type=\"text\"]");
+					await page.click("div[id=\"endNav\"] input[type=\"text\"]", click_count=2);
 					await page.fill("div[id=\"endNav\"] input[type=\"text\"]", inputCoin.toString());
 					await page.click("div[id=\"endNav\"] >> text=/.*Start Round.*/");
 					console.log('按下 start round');
