@@ -1,5 +1,5 @@
-//const { chromium } = require('playwright');
-//const ocrSpace = require('ocr-space-api-wrapper');
+const { chromium } = require('playwright');
+const ocrSpace = require('ocr-space-api-wrapper');
 
 (async () => {
 	let date = new Date();
