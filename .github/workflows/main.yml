@@ -25,16 +25,13 @@ jobs:
 
       - uses: actions/setup-node@v1
 
-      - name: Install playwright
-        run: npm install playwright
+      - name: Install puppeteer
+        run: npm i puppeteer
         
-      - name: Install ocrspace
-        run: npm i ocr-space-api-wrapper
+     #  - name: Install ocrspace
+     #   run: npm i ocr-space-api-wrapper
         
-      - name: run playwright
-        run: node test.js $NAME $PW $OCRKEY
-        env:
-          NAME: ${{ secrets.NAME }}
-          PW: ${{ secrets.PW }}
-          OCRKEY: ${{ secrets.OCRKEY }}
+       - name: Run puppeteer
+        run: node test.js 
+ 
       
