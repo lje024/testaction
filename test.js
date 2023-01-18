@@ -26,8 +26,7 @@ const puppeteer = require("puppeteer");
 		console.log('type password');
 		await page.type('#login-password', 'Sj123456789', {delay: 100});
 	    	console.log('click login');
-		await page.waitForTimeout(5000);
-		await page.click('#login-button');
+		await page.click('div.login-button-wrapper button');
 		await page.waitForTimeout(10000);
 		let urlcheck = await page.url();
 		if(urlcheck == 'https://freecash.com/earn'){
