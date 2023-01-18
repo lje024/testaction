@@ -23,7 +23,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v1
+      - uses: actions/cache@v2
 
       - name: Install puppeteer
         run: npm i puppeteer
@@ -31,7 +31,7 @@ jobs:
      #  - name: Install ocrspace
      #   run: npm i ocr-space-api-wrapper
         
-       - name: Run puppeteer
+      - name: Run puppeteer
         run: node test.js 
  
       
